@@ -1,0 +1,51 @@
+class VotingSystem:
+    def __init__(self):
+        self.candidates = {}
+        self.votes = {}
+    
+    def add_candidate(self, candidate_name):
+        if candidate_name not in self.candidates:
+            self.candidates[candidate_name] = 0
+    
+    def cast_vote(self, voter_id, candidate_name):
+        if voter_id in self.votes:
+            return "You have already voted."
+        
+        if candidate_name in self.candidates:
+            self.candidates[candidate_name] += 1
+            self.votes[voter_id] = candidate_name
+            return f"Vote cast for '{candidate_name}' by voter '{voter_id}'."
+        else:
+            return f"Candidate '{candidate_name}' does not exist."
+    
+    def show_results(self):
+        return {candidate: vote_count for candidate, vote_count in self.candidates.items()}
+    
+    def reset_votes(self):
+        self.candidates = {candidate: 0 for candidate in self.candidates}
+        self.votes = {}
+
+def main():
+    voting_system = VotingSystem()
+
+    # Add candidates
+    num_candidates = int(input("Enter number of candidates: "))
+    for _ in range(num_candidates):
+        candidate_name = input("Enter candidate name: ")
+        voting_system.add_candidate(candidate_name)
+
+    # Get number of voters
+    num_voters = int(input("Enter number of voters: "))
+    for _ in range(num_voters):
+        voter_id = input("Enter voter ID: ")
+        candidate_name = input("Enter candidate name to vote for: ")
+        print(voting_system.cast_vote(voter_id, candidate_name))
+
+    # Show results
+    results = voting_system.show_results()
+    print("\nVoting Results:")
+    for candidate, votes in results.items():
+        print(f"{candidate}: {votes} votes")
+
+if __name__ == "__main__":
+    main()
